@@ -54,7 +54,7 @@ public class LoginController implements CommunityConstant {
     public String register(Model model, User user) throws MessagingException {
         Map<String, Object> map = userService.register(user);
         if (map == null || map.isEmpty()) {
-            model.addAttribute("msg", "Register successfully. We have sent you an activation email.Please activate your account soon.");
+            model.addAttribute("msg", "注册成功！我们已经向你的邮箱发送了一封激活邮件，请尽快激活你的账号。");
             model.addAttribute("target", "/index");
             return "/site/operate-result";
         } else {
