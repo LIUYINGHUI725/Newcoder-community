@@ -2,9 +2,11 @@ package com.newcoder.community;
 
 import com.newcoder.community.dao.DiscussPostMapper;
 import com.newcoder.community.dao.LoginTicketMapper;
+import com.newcoder.community.dao.MessageMapper;
 import com.newcoder.community.dao.UserMapper;
 import com.newcoder.community.entity.DiscussPost;
 import com.newcoder.community.entity.LoginTicket;
+import com.newcoder.community.entity.Message;
 import com.newcoder.community.entity.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,10 +32,13 @@ public class MapperTests {
     @Autowired
     private LoginTicketMapper loginTicketMapper;
 
+    @Autowired
+    private MessageMapper messageMapper;
+
     @Test
-    public void testSelectUser(){
+    public void testSelectUser() {
         User user = userMapper.selectById(101);
-        System.out.println(user) ;
+        System.out.println(user);
 
         user = userMapper.selectByName("liubei");
         System.out.println(user);
@@ -43,18 +48,18 @@ public class MapperTests {
     }
 
     @Test
-    public void testInsertUser(){
-         User user = new User();
-         user.setUsername("test");
-         user.setPassword("123");
-         user.setSalt("abc");
-         user.setEmail("test@qq.com");
-         user.setHeaderUrl("http://www/nowcoder.com./101.png");
-         user.setCreateTime(new Date());
+    public void testInsertUser() {
+        User user = new User();
+        user.setUsername("test");
+        user.setPassword("123");
+        user.setSalt("abc");
+        user.setEmail("test@qq.com");
+        user.setHeaderUrl("http://www/nowcoder.com./101.png");
+        user.setCreateTime(new Date());
 
-         int rows=userMapper.insertUser(user);
-         System.out.println(rows);
-         System.out.println(user.getId()) ;
+        int rows = userMapper.insertUser(user);
+        System.out.println(rows);
+        System.out.println(user.getId());
 
     }
 
@@ -71,9 +76,9 @@ public class MapperTests {
     }
 
     @Test
-    public void testSelectPosts(){
-        List<DiscussPost> list = discussPostMapper.selectDiscussPosts(149,0,10);
-        for(DiscussPost post:list){
+    public void testSelectPosts() {
+        List<DiscussPost> list = discussPostMapper.selectDiscussPosts(149, 0, 10);
+        for (DiscussPost post : list) {
             System.out.println(post);
         }
 
@@ -82,23 +87,47 @@ public class MapperTests {
     }
 
     @Test
-    public void testInsertLoginTicket(){
+    public void testInsertLoginTicket() {
         LoginTicket loginTicket = new LoginTicket();
         loginTicket.setUserId(101);
         loginTicket.setTicket("abc");
         loginTicket.setStatus(0);
-        loginTicket.setExpired(new Date(System.currentTimeMillis()+1000*60*10));
+        loginTicket.setExpired(new Date(System.currentTimeMillis() + 1000 * 60 * 10));
 
         loginTicketMapper.insertLoginTicket(loginTicket);
     }
 
     @Test
-    public void testSelectByTicket(){
+    public void testSelectByTicket() {
         LoginTicket loginTicket = loginTicketMapper.selectByTicket("abc");
         System.out.println(loginTicket);
-        loginTicketMapper.updateStatus("abc",1);
+        loginTicketMapper.updateStatus("abc", 1);
         loginTicket = loginTicketMapper.selectByTicket("abc");
         System.out.println(loginTicket);
+    }
+
+    @Test
+    public void testSelectLetters() {
+        List<Message> list = messageMapper.selectConversations(111, 0, 20);
+        for (Message message : list) {
+            System.out.println(message);
+        }
+
+        int count = messageMapper.selectConversationCount(111);
+        System.out.println(count);
+
+        list = messageMapper.selectLetters("111_112", 0, 10);
+        for (Message message : list) {
+            System.out.println(message);
+        }
+
+        count = messageMapper.selectLetterCount("111_112");
+        System.out.println(count);
+
+        count = messageMapper.selectLetterUnreadCount(131, "111_131");
+        System.out.println(count);
+
+
     }
 
 }
