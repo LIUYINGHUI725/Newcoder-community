@@ -7,6 +7,9 @@ public class RedisKeyUtil {
     private static final String PREFIX_USER_LIKE = "like:user";
     private static final String PREFIX_FOLLOWEE = "followee";
     private static final String PREFIX_FOLLOWER = "follower";
+    private static final String PREFIX_KAPTCHA = "kaptcha";
+    private static final String PREFIX_TICKET = "ticket";
+    private static final String PREFIX_USER = "user";
 
     //某个实体类的赞 存的是userId的集合 （给这个实体点赞的用户id的集合）
     //like:entity:entityType:entityId -> set(userId)
@@ -32,5 +35,23 @@ public class RedisKeyUtil {
     public static String getFollowerKey(int entityType, int entityId) {
         return PREFIX_FOLLOWER + SPLIT + entityType + SPLIT + entityId;
     }
+
+    //登录的验证码,owner是用户的登录凭证(随机字符串)。输入验证码时用户还没登录
+    //kaptcha:owner
+    public static String getKaptchaKey(String owner) {
+        return PREFIX_KAPTCHA + SPLIT + owner;
+    }
+
+    //登录的凭证 ticket
+    public static String getTicketKey(String ticket) {
+        return PREFIX_TICKET + SPLIT + ticket;
+    }
+
+    //用户
+    //user:userId -> 存的是user对象，它会自动序列化成字符串
+    public static String getUserKey(int userId) {
+        return PREFIX_USER + SPLIT + userId;
+    }
+
 
 }
